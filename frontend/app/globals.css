@@ -1,26 +1,161 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Calm, corporate palette. Light is the default; .dark is toggled by ThemeProvider. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light; /* native controls, scrollbars, form fields */
+  --background: #f6f7f9;
+  --foreground: #1b2430;
+  --surface: #ffffff;
+  --surface-muted: #eef1f5;
+  --border: #dde2e9;
+  --muted-foreground: #5b6675;
+  --primary: #0f5f73;
+  --primary-hover: #0b4b5c;
+  --primary-foreground: #ffffff;
+  --accent: #e3f0f3;
+  --accent-foreground: #0b4b5c;
+  --ring: #1b87a0;
+
+  --success: #176b3a;
+  --success-bg: #e3f4ea;
+  --warning: #8a5a00;
+  --warning-bg: #fdf1d6;
+  --danger: #a1232b;
+  --danger-bg: #fbe5e6;
+  --info: #1d4f91;
+  --info-bg: #e4edfa;
+}
+
+.dark {
+  color-scheme: dark;
+  --background: #0f1419;
+  --foreground: #e6eaf0;
+  --surface: #171d25;
+  --surface-muted: #1e2630;
+  --border: #2b3441;
+  --muted-foreground: #9aa6b5;
+  --primary: #3aa8c4;
+  --primary-hover: #5bbad3;
+  --primary-foreground: #06222b;
+  --accent: #173440;
+  --accent-foreground: #a9e0ee;
+  --ring: #5bbad3;
+
+  --success: #6fd29a;
+  --success-bg: #12301f;
+  --warning: #f0c36a;
+  --warning-bg: #35280a;
+  --danger: #f29198;
+  --danger-bg: #3a1619;
+  --info: #94bdf5;
+  --info-bg: #14264a;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+  --color-border: var(--border);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-ring: var(--ring);
+  --color-success: var(--success);
+  --color-success-bg: var(--success-bg);
+  --color-warning: var(--warning);
+  --color-warning-bg: var(--warning-bg);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-info: var(--info);
+  --color-info-bg: var(--info-bg);
+
+  /* System fonts only: the app runs offline, nothing is downloaded. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono",
+    monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Markdown styling for assistant answers */
+.markdown {
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+.markdown > * + * {
+  margin-top: 0.75rem;
+}
+.markdown h1,
+.markdown h2,
+.markdown h3 {
+  font-weight: 600;
+  line-height: 1.3;
+  margin-top: 1.1rem;
+}
+.markdown h1 { font-size: 1.2rem; }
+.markdown h2 { font-size: 1.1rem; }
+.markdown h3 { font-size: 1rem; }
+.markdown ul { list-style: disc; padding-left: 1.4rem; }
+.markdown ol { list-style: decimal; padding-left: 1.4rem; }
+.markdown li + li { margin-top: 0.25rem; }
+.markdown strong { font-weight: 600; }
+.markdown a { color: var(--primary); text-decoration: underline; }
+.markdown code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--surface-muted);
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.3rem;
+}
+.markdown blockquote {
+  border-left: 3px solid var(--border);
+  padding-left: 0.9rem;
+  color: var(--muted-foreground);
+}
+.markdown table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.markdown th,
+.markdown td {
+  border: 1px solid var(--border);
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+}
+.markdown th { background: var(--surface-muted); font-weight: 600; }
+
+@keyframes thinking-dot {
+  0%, 80%, 100% { opacity: 0.25; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-2px); }
 }
